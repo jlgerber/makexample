@@ -1,0 +1,11 @@
+---
+schema: 1
+name: foo
+version: '1.2.3'
+description: Plugins for Maya
+buildRequires:
+  maya: '2018'
+  boost: '1.61+'
+  bs: any
+build:
+  - pb2 -DMAYA_VERSION=$MAYA_VERSION ^/src/maya/plugins/%%
