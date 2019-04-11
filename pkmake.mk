@@ -15,14 +15,17 @@ _space := $(_space) $(_space)
 _comma := ,
 
 DD_OS ?= cent6_64
-#_manifest := $(shell find . -iname manifest.yaml | xargs -I@ grep version @ | sed "s/'//g")
+
+#
+# find manifest and extract information
+#
 _manifest := $(shell find . -iname manifest.yaml)
 
 ifeq ($(_manifest),)
   $(error "unable to find manifest.yaml")
 endif
 
-_version := $(shell cat $(_manifest) | grep version | cut -f 2 -d ' ' | sed "s/'//g")
+_version := $(shell cat $(_manifest) | grep -E "^version:" | cut -f 2 -d ' ' | sed "s/'//g")
 _package_name := $(shell cat $(_manifest) | grep 'name:' | cut -f 2 -d ' ' | sed "s/'//g")
 # Verbosity Level
 ifneq ($(filter $(VERBOSE),$(_truthy)),)
@@ -33,7 +36,7 @@ endif
 
 ifeq ($(_verbose),yes)
   $(info manifest "$(_manifest)")
-  $(info package is $(_package_name)-$(_version))
+  $(info package: $(_package_name)-$(_version))
 endif
 
 # Perform ops or just pretend?
@@ -128,7 +131,7 @@ endif
 ifeq ($(_withDocs),yes)
   _docsStr := "--with-docs"
 else
-  _docsStr := ""
+  _docsStr :=
 endif
 
 ifeq ($(DD_OS), cent7_64)
