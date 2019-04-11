@@ -144,7 +144,7 @@ else ifeq ($(DD_OS), cent6_64)
   ifeq ($(_context),facility)
     _installTarget := "pk tag && pk build $(_docsStr) && pk install --level=$(_context)"
   else
-    _installTarget := "pk build  $(_docsStr) && pk install --level=$(_context)"
+    _installTarget := "pk build $(_docsStr) && pk install --level=$(_context)"
   endif
 else
   $(error invalid os: "$(DD_OS)")
@@ -168,7 +168,8 @@ install: ## Build and install. On cent 7, if the CONTEXT=facility, this will cre
 ifeq ($(_dryRun),yes)
 	@echo $(_installTarget)
 else
-	$(_installTarget)
+	@echo $(_installTarget)
+	@eval $(_installTarget)
 endif
 
 print-%: ; @echo $* = $($*)
